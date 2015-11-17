@@ -32,7 +32,7 @@ namespace PCDec{
     public:
         BitTreeKnowledgeBase();
         ~BitTreeKnowledgeBase();
-        int learn(std::vector<std::bitset<16> > position);
+        int learn(std::vector<std::bitset<16> > *position);
 
     private:
          BitTreeNode root;

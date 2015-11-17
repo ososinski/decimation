@@ -22,7 +22,7 @@ namespace PCDec{
           \return Returns 1(positive number) if it learned the new position, 0 if the position is already known
           or a negative number if an error occurred;
         */
-        int BitTreeKnowledgeBase::learn(std::vector<std::bitset<16> > position){
+        int BitTreeKnowledgeBase::learn(std::vector<std::bitset<16> > *position){
             return BitTreeKnowledgeBase::root.add(position);
 
         }

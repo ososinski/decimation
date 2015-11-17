@@ -37,33 +37,33 @@ namespace PCDec{
         // bitwise and  0010 | 0000   note only if the path was active the result is same as the current data
         //
 
-        int BitTreeNode::add(std::vector<std::bitset<16> > &position){
+        /*int BitTreeNode::add(std::vector<std::bitset<16> > * position){
             int result = -1; // set result to error
             int index = 0;
-            std::bitset<16> current = position.back();
-            position.pop_back();
+            std::bitset<16> current = position->back();
+            position->pop_back();
             // ### level 0 ###
             if((current & BitTreeNode::data[index])==current){//check if the position has already been seen
                 //### level 1 ###
-                if(position.size()!=0){
+                if(position->size()!=0){
                     index =1+log2(current.to_ulong()); //get the next index as log2 of the integer value of the bitset 1-16
-                    current = position.back();
-                    position.pop_back();
+                    current = position->back();
+                    position->pop_back();
                     if((current & BitTreeNode::data[index])==current) {//check if the position has already been seen
                         //### level 2 ###
-                        if (position.size() != 0) {
+                        if (position->size() != 0) {
                             index = 1+16+(index-1)*16+log2(current.to_ulong()); //get the next index as log2 of the integer value of the bitset 1-16
-                            current = position.back();
-                            position.pop_back();
+                            current = position->back();
+                            position->pop_back();
                             if((current & BitTreeNode::data[index])==current){//check if the position has already been seen
                                 //### level 3 ###
-                                if (position.size() != 0) {
+                                if (position->size() != 0) {
                                     index = 1 + 16 + 256 + (index - 17) * 16 + log2(current.to_ulong());
-                                    current = position.back();
-                                    position.pop_back();
+                                    current = position->back();
+                                    position->pop_back();
                                     if((current & BitTreeNode::data[index])==current){//check if the position has already been seen
                                         //### level 3 ###
-                                        if (position.size() != 0) {
+                                        if (position->size() != 0) {
                                             long pt_index = (index - 273) * 16 + log2(current.to_ulong());
                                             if(pointers[pt_index]== NULL) {
                                                 pointers[pt_index] = new BitTreeNode();
@@ -75,7 +75,7 @@ namespace PCDec{
                                         }
                                     }else {
                                         BitTreeNode::data[index] |= current; // set the correct path bit
-                                        if (position.size() != 0) {
+                                        if (position->size() != 0) {
                                             long pt_index = (index - 273) * 16 + log2(current.to_ulong());
                                             pointers[pt_index] = new BitTreeNode();
                                             result = pointers[pt_index]->add(position);
@@ -90,12 +90,12 @@ namespace PCDec{
                             }else {
                                 BitTreeNode::data[index] |= current; // set the correct path bit
                                 //### level 3 ###
-                                if(position.size()!=0) {
+                                if(position->size()!=0) {
                                     index = 1 + 16 + 256 + (index - 17) * 16 + log2(current.to_ulong());
-                                    std::bitset<16> current = position.back();
-                                    position.pop_back();
+                                    std::bitset<16> current = position->back();
+                                    position->pop_back();
                                     BitTreeNode::data[index] |= current; // set the correct path bit
-                                    if (position.size() != 0) {
+                                    if (position->size() != 0) {
                                         long pt_index = (index - 273) * 16 + log2(current.to_ulong());
                                         pointers[pt_index] = new BitTreeNode();
                                         result = pointers[pt_index]->add(position);
@@ -112,18 +112,18 @@ namespace PCDec{
                     }else{
                         BitTreeNode::data[index] |= current; // set the correct path bit
                         //### level 2 ###
-                        if(position.size()!=0){
+                        if(position->size()!=0){
                             index = 1+16+(index-1)*16+log2(current.to_ulong()); //get the next index as log2 of the integer value of the bitset 17 is 16 +1
-                            std::bitset<16> current = position.back();
-                            position.pop_back();
+                            std::bitset<16> current = position->back();
+                            position->pop_back();
                             BitTreeNode::data[index] |= current; // set the correct path bit
                             //### level 3 ###
-                            if(position.size()!=0){
+                            if(position->size()!=0){
                                 index = 1+16+256+(index-17)*16+log2(current.to_ulong());
-                                std::bitset<16> current = position.back();
-                                position.pop_back();
+                                std::bitset<16> current = position->back();
+                                position->pop_back();
                                 BitTreeNode::data[index] |= current; // set the correct path bit
-                                if(position.size()!=0){
+                                if(position->size()!=0){
                                     long pt_index = (index-273)*16+log2(current.to_ulong());
                                     pointers[pt_index] = new BitTreeNode();
                                     result = pointers[pt_index]->add(position);
@@ -144,24 +144,24 @@ namespace PCDec{
             }else {//position has not been seen, it needs to be added
                 BitTreeNode::data[index] |= current; // set the correct path bit
                 //### level 1 ###
-                if(position.size()!=0){
+                if(position->size()!=0){
                     index =1+log2(current.to_ulong()); //get the next index as log2 of the integer value of the bitset
-                    std::bitset<16> current = position.back();
-                    position.pop_back();
+                    std::bitset<16> current = position->back();
+                    position->pop_back();
                     BitTreeNode::data[index] |= current; // set the correct path bit
                     //### level 2 ###
-                    if(position.size()!=0){
+                    if(position->size()!=0){
                         index = 1+16+(index-1)*16+log2(current.to_ulong()); //get the next index as log2 of the integer value of the bitset 17 is 16 +1
-                        std::bitset<16> current = position.back();
-                        position.pop_back();
+                        std::bitset<16> current = position->back();
+                        position->pop_back();
                         BitTreeNode::data[index] |= current; // set the correct path bit
                         //### level 3 ###
-                        if(position.size()!=0){
+                        if(position->size()!=0){
                             index = 1+16+256+(index-17)*16+log2(current.to_ulong());
-                            std::bitset<16> current = position.back();
-                            position.pop_back();
+                            std::bitset<16> current = position->back();
+                            position->pop_back();
                             BitTreeNode::data[index] |= current; // set the correct path bit
-                            if(position.size()!=0){
+                            if(position->size()!=0){
                                 long pt_index = (index-273)*16+log2(current.to_ulong());
                                 pointers[pt_index] = new BitTreeNode();
                                 result = pointers[pt_index]->add(position);
@@ -184,5 +184,71 @@ namespace PCDec{
 
 
             return result;
-        };
+        };*/
+
+    int BitTreeNode::add(std::vector<std::bitset<16> > * position){
+        int result = -1; // set result to error
+        int index = 0;
+        std::bitset<16> current = position->back();
+        position->pop_back();
+        // ### level 0 ###
+        if((current & BitTreeNode::data[index])==current){//check if the position has already been seen
+            //### level 1 ###
+            if(position->size()!=0){
+                index =1+log2(current.to_ulong()); //get the next index as log2 of the integer value of the bitset 1-16
+                current = position->back();
+                position->pop_back();
+                if((current & BitTreeNode::data[index])==current) {//check if the position has already been seen
+                    //### level 2 ###
+                    if (position->size() != 0) {
+                        long pt_index = (index - 1) * 16 + log2(current.to_ulong());
+                        if(pointers[pt_index]== NULL) {
+                            pointers[pt_index] = new BitTreeNode();
+                        }
+                        result = pointers[pt_index]->add(position);
+                    } else {
+                        result = 0;
+                    }
+                }else {
+                    BitTreeNode::data[index] |= current; // set the correct path bit
+                    if (position->size() != 0) {
+                        long pt_index = (index - 1) * 16 + log2(current.to_ulong());
+                        pointers[pt_index] = new BitTreeNode();
+                        result = pointers[pt_index]->add(position);
+                    } else {
+                        result = 1;
+                    }
+                }
+            }else {
+                result = 0;
+            }
+
+
+        }else {//position has not been seen, it needs to be added
+            BitTreeNode::data[index] |= current; // set the correct path bit
+            //### level 1 ###
+            if(position->size()!=0) {
+                index = 1 + log2(current.to_ulong()); //get the next index as log2 of the integer value of the bitset
+                std::bitset<16> current = position->back();
+                position->pop_back();
+                BitTreeNode::data[index] |= current; // set the correct path bit
+                //### level 2 ###
+                 if (position->size() != 0) {
+                     long pt_index = (index - 1) * 16 + log2(current.to_ulong());
+                     pointers[pt_index] = new BitTreeNode();
+                     result = pointers[pt_index]->add(position);
+                 } else {
+                     result = 1;
+                 }
+
+            } else {
+                result = 1;
+            }
+
+            result = 1;
+        }
+
+        return result;
+    };
+
     };

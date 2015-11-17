@@ -9,15 +9,15 @@
 
 
 namespace PCDec{
-    const int CACHE_SIZE = 4369; // 16 * 16 * 16 + 16 * 16 + 17
-    const int LEAF_NUMBER = 65536; // 16 * 16 * 16
+    const int CACHE_SIZE = 17; // 16 * 16 * 16 + 16 * 16 + 17
+    const int LEAF_NUMBER = 256; // 16 * 16 * 16
     class BitTreeNode {
 
     public:
         BitTreeNode();
         ~BitTreeNode();
 
-        int add(std::vector<std::bitset<16> > &position);
+        int add(std::vector<std::bitset<16> >  *position);
 
     private:
         std::bitset<16> data[CACHE_SIZE]; //3^level tree node 16 * 16 * 16 + 16 * 16 + 17 and the root

@@ -33,7 +33,9 @@ namespace PCDec{
         static int static_convert( std::vector<std::bitset<16> > &hash, double x, double y, double z, double ro, int buffer_size){
             char buffer[buffer_size];
             int no_error = 1;
-            sprintf(buffer,"%.0f_%.0f_%.0f|",x/ro,y/ro,z/ro);
+
+            sprintf(buffer,"_%.0f_%.0f_%.0f|",x/ro,y/ro,z/ro);
+            //std::cout << buffer << std::endl;
             int i = 0;
             for(char c = buffer[i];c!='|';c=buffer[++i]){ //each character
                 switch (c) {
@@ -59,34 +61,32 @@ namespace PCDec{
                         hash.push_back(std::bitset<16>(std::string("0000000001000000")));
                         break;
                     case '7' :
-                        hash.push_back(std::bitset<16>(std::string("0000000001000000")));
-                        break;
-                    case '8' :
-                        hash.push_back(std::bitset<16>(std::string("0000000001000000")));
-                        break;
-                    case '9' :
                         hash.push_back(std::bitset<16>(std::string("0000000010000000")));
                         break;
-                    case '-' :
+                    case '8' :
                         hash.push_back(std::bitset<16>(std::string("0000000100000000")));
                         break;
-                    case '_' :
+                    case '9' :
                         hash.push_back(std::bitset<16>(std::string("0000001000000000")));
                         break;
-                    case 'e' :
+                    case '-' :
                         hash.push_back(std::bitset<16>(std::string("0000010000000000")));
                         break;
-                    case 'E' :
+                    case '_' :
                         hash.push_back(std::bitset<16>(std::string("0000100000000000")));
                         break;
-                    case '.' :
+                    case 'e' :
+                    case 'E' :
                         hash.push_back(std::bitset<16>(std::string("0001000000000000")));
                         break;
-                    case ',' :
+                    case '.' :
                         hash.push_back(std::bitset<16>(std::string("0010000000000000")));
                         break;
-                    default:
+                    case ',' :
                         hash.push_back(std::bitset<16>(std::string("0100000000000000")));
+                        break;
+                    default:
+                        hash.push_back(std::bitset<16>(std::string("1000000000000000")));
                         no_error = 0;
 
                 } //end switch c
