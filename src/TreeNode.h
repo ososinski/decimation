@@ -9,8 +9,8 @@
 
 
 namespace PCDec{
-    const int CACHE_SIZE = 17; // 16 * 16 * 16 + 16 * 16 + 17
-    const int LEAF_NUMBER = 256; // 16 * 16 * 16
+    const int CACHE_SIZE = 1; // 16 * 16 * 16 + 16 * 16 + 17
+    const int LEAF_NUMBER = 16; // 16 * 16 * 16
     class BitTreeNode {
 
     public:

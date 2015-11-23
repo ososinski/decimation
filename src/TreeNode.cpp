@@ -3,6 +3,7 @@
 //
 
 #include <math.h>
+#include <new>
 #include "TreeNode.h"
 
 namespace PCDec{
@@ -185,7 +186,7 @@ namespace PCDec{
 
             return result;
         };*/
-
+/*
     int BitTreeNode::add(std::vector<std::bitset<16> > * position){
         int result = -1; // set result to error
         int index = 0;
@@ -247,6 +248,46 @@ namespace PCDec{
 
             result = 1;
         }
+
+        return result;
+    };*/
+
+    int BitTreeNode::add(std::vector<std::bitset<16> > * position){
+        int result = -1; // set result to error
+        int index = 0;
+        std::bitset<16> current = position->back();
+        position->pop_back();
+        // ### level 0 ###
+        if((current & BitTreeNode::data[index])==current){//check if the position has already been seen
+            //### level 1 ###
+                    if (position->size() != 0) {
+                        long pt_index = log2(current.to_ulong());
+                        if(pointers[pt_index]== NULL) {
+                            pointers[pt_index] = new (std::nothrow) BitTreeNode();
+                        }
+                        if(pointers[pt_index] != NULL) { // error checking (only false if new failed)
+                            result = pointers[pt_index]->add(position);
+                        }else {
+                            result = -1;
+                        }
+                    } else {
+                        result = 0;
+                    }
+        }else {
+            BitTreeNode::data[index] |= current; // set the correct path bit
+            if (position->size() != 0) {
+                long pt_index = log2(current.to_ulong());
+                pointers[pt_index] = new (std::nothrow) BitTreeNode();
+                if(pointers[pt_index] != NULL) { // error checking (only false if new failed)
+                    result = pointers[pt_index]->add(position);
+                }else {
+                    result = -1;
+                }
+            } else {
+                result = 1;
+            }
+        }
+
 
         return result;
     };

@@ -40,6 +40,20 @@ namespace PCDec{
 
     };
 
+    //! VectorKnowledgeBase is using a vector to represent data - memory efficient but nasty otherwise
+    class VectorKnowledgeBase{
+
+    public:
+        VectorKnowledgeBase();
+        ~VectorKnowledgeBase();
+        int learn(std::vector<std::bitset<16> > *position);
+
+    private:
+        std::vector<std::vector<std::bitset<16> > *> known_positions;
+
+
+    };
+
 }
 
 #endif //DECIMATION_KNOWLEDGEBASE_H
