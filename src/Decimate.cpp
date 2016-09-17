@@ -6,11 +6,12 @@
 #include <sstream>
 //#include <rpcndr.h>
 #include <stdlib.h>     /* atof */
+#include <map>
+#include <array>
+
+
 
 #include "Decimate.h"
-#include "KnowledgeBase.h"
-#include "TreeNode.h"
-#include "HashCode.h"
 
 using namespace PCDec;
 using namespace std;
@@ -75,12 +76,7 @@ int main(int argc, char* argv[])
     //cout << "o: " << outfile << " c: " <<cube_size << "s: "<< source << std::endl;
     //exit(0);
 
-    BitHash<128> converter(cube_size);
-    //BitTreeKnowledgeBase *kb = new BitTreeKnowledgeBase();
-    VectorKnowledgeBase *kb = new VectorKnowledgeBase();
-    std::vector<std::bitset<16> > hash;
-    hash.clear();
-
+    std::map<std::array<char,14>,bool> kb;  
     double x,y,z;
 
     ifstream file(source.data());
@@ -88,6 +84,10 @@ int main(int argc, char* argv[])
     if(file.is_open())
     {
         string line;
+        std::istringstream input("");
+        std::array<char,14> hash;
+        hash.fill('_');
+
         while(getline(file, line))   //while  we  are not  yet  to  the end  of the  file
         {
             counter++;
@@ -101,19 +101,27 @@ int main(int argc, char* argv[])
                 }
             }
 
-            std::istringstream input(line);
+            input.str(line);
             input >> x >> y >> z;
 
-            converter.convert(hash,x,y,z);
 
-            if(error = kb->learn(&hash)) {
-                if(error>0) {
-                    output << line << endl;
-                }else{
-                    std::cerr << "Error assigning new memory; Only processed "<< counter << " lines; Exiting!";
-                    break;
 
-                }
+	//hash
+            hash[0]= static_cast<int32_t>(x/cube_size);
+            hash[5]= static_cast<int32_t>(y/cube_size);
+            hash[10]= static_cast<int32_t>(z/cube_size);
+        //
+
+
+            if(verbose){
+               for(int i =0;i++;i<14){
+               cout<<hash[i];
+               }
+               cout<<endl;
+            }
+
+            if(kb.insert(std::map<array<char,14>,bool>::value_type(hash,true)).second){ //emplace in c++11 is insert with implicit data_type container creation
+               output << line << endl;
             }
         }
         output.close();
@@ -124,19 +132,4 @@ int main(int argc, char* argv[])
         cout<<"File  not opened \n";
     }
 
-    /* // some test code
-        std::cout << "convertion "<< converter.convert(hash,1,1,1) << "\n";
-        std::cout << "learning " << kb->learn(hash) << "\n";
-        hash.clear();
-        std::cout << "convertion "<< converter.convert(hash,1,1,2) << "\n";
-        std::cout << "learning " << kb->learn(hash) << "\n";
-        hash.clear();
-        std::cout << "convertion "<< converter.convert(hash,1,2,1) << "\n";
-        std::cout << "learning " << kb->learn(hash) << "\n";
-        hash.clear();
-        std::cout << "convertion "<< converter.convert(hash,1,1,1) << "\n";
-        std::cout << "learning " << kb->learn(hash) << "\n";
-        hash.clear();
-        std::cout << "convertion "<< converter.convert(hash,1,1,2) << "\n";
-        std::cout << "learning " << kb->learn(hash) << "\n";*/
 }

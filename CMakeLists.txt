@@ -1,5 +1,5 @@
 project (DECIMATION)
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 2.8)
 
 file(GLOB_RECURSE PCDec_SOURCES "src/*.cpp")
 file(GLOB_RECURSE PCDec_HEADERS "src/*.h")
@@ -15,6 +15,7 @@ list(REMOVE_DUPLICATES PCDec_INCLUDE_DIRS)
 # set paths (only needed on windows)
 #if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 #    #SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_COVERAGE_COMPILE_FLAGS}" )
+    SET( CMAKE_CXX_FLAGS "-std=c++11")
     SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS}  -static-libgcc -static-libstdc++" )
 #endif()
 
